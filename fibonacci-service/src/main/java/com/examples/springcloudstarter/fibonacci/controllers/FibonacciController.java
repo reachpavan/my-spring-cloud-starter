@@ -1,38 +1,45 @@
 package com.examples.springcloudstarter.fibonacci.controllers;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
-
+import com.examples.springcloudstarter.fibonacci.domains.FibonacciRequest;
 import com.examples.springcloudstarter.fibonacci.domains.FibonacciSeries;
 import com.examples.springcloudstarter.fibonacci.services.FibonacciService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @Validated
 public class FibonacciController {
 
-    private static final String TEMPLATE = "Hello, %s!";
+    @Value("${fibonacci.limit:100000}")
+    private int maxValue;
 
     @Autowired
     private FibonacciService fibonacciService;
 
     @RequestMapping("/fibonacci")
     public HttpEntity<FibonacciSeries> getFibonacciSeries(
-            @RequestParam(value = "count", required = true)
-            @Min(value = 1, message = "fibonacci.count.min")
-            @Max(value = 100000, message = "fibonacci.count.max") int count) {
+            @Valid FibonacciRequest param) {
 
-        FibonacciSeries fibonacciSeries = new FibonacciSeries(fibonacciService.getFibonacciSeries(count));
-        fibonacciSeries.add(linkTo(methodOn(FibonacciController.class).getFibonacciSeries(count)).withSelfRel());
+        FibonacciSeries fibonacciSeries = new FibonacciSeries(fibonacciService.getFibonacciSeries(param.getCount()));
+        fibonacciSeries.add(
+                linkTo(
+                        methodOn(FibonacciController.class).getFibonacciSeries(param)
+                ).withSelfRel()
+        );
 
         return new ResponseEntity<>(fibonacciSeries, HttpStatus.OK);
     }
