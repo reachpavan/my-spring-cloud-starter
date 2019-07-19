@@ -1,28 +1,28 @@
 # Fibonacci Series Service
 
-###Maven Build
+### Maven Build
 ```
 ./mvw package
 ```
 
-###Docker
+### Docker
 ```
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up
 ```
 
-###Usage
-#####Fibonacci Service
+### Usage
+##### Fibonacci Service
 ```
 curl "http://localhost:8080/fibonacci?count=10"
 ```
 
-######Response:
+###### Response:
 ```
     {
       "series": [0,1,1,2,3,5,8,13,21,34]
     }
 ```
-######Error Response:
+###### Error Response:
 ```
     {
       "status": "BAD_REQUEST",
@@ -30,18 +30,18 @@ curl "http://localhost:8080/fibonacci?count=10"
     }
 ```
 
-#####API Health Check Service
+##### API Health Check Service
 ``` 
 curl "http://localhost:8080/actuator/health"
 ```
-######Response:
+###### Response:
 ```
 { 
   "status":"UP"
 }
 ```
 
-####TODO:
+#### TODO:
 1. Log File Management: Rolling Logs
 2. Enable SSL Security Filter
 3. Add Jenkins, Sonar & New Relic support
