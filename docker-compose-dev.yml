@@ -1,0 +1,6 @@
+version: '2'
+services:
+  fibonacci-service:
+    build: fibonacci-service
+    ports:
+      - 8080:8080

@@ -1,0 +1,11 @@
+version: '2'
+services:
+  fibonacci-service:
+#    image: docker-artifacts-repo/fibonacci-service
+    restart: always
+    ports:
+    - 8080:8080
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"

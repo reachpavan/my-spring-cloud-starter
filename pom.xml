@@ -32,7 +32,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<modules>
 		<module>fibonacci-service</module>
 	</modules>
