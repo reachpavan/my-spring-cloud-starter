@@ -1,5 +1,7 @@
 package com.examples.springcloudstarter.fibonacci.controllers;
 
+import com.examples.springcloudstarter.fibonacci.services.FibonacciService;
+import com.examples.springcloudstarter.fibonacci.services.SimpleFibonacciServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.examples.springcloudstarter.fibonacci.services.SimpleFibonacciServiceImpl.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +30,8 @@ public class FibonacciControllerTest {
         mockMvc.perform(get("/fibonacci"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("MISSING_PARAM"));
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value(MSG_PARAMETER_MISSING));
     }
 
     @Test
@@ -35,21 +39,24 @@ public class FibonacciControllerTest {
         mockMvc.perform(get("/fibonacci?unknown=10"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("MISSING_PARAM"));
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value(MSG_PARAMETER_MISSING));
     }
 
     @Test
     public void getFibonacciSeries_withCountLowerLimit_returnsBadRequest() throws Exception {
-        mockMvc.perform(get("/fibonacci?count=0"))
+        mockMvc.perform(get("/fibonacci?count=-1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("VALIDATION_ERROR"));
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value(MSG_MIN_VALUE));
     }
 
     @Test
     public void getFibonacciSeries_withCountUpperLimit_returnsBadRequest() throws Exception {
         mockMvc.perform(get("/fibonacci?count=100001"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("VALIDATION_ERROR"));
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value(String.format(MSG_MAX_VALUE, 100000)));
     }
 
     @Test
