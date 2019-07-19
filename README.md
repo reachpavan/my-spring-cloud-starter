@@ -2,7 +2,7 @@
 
 ### Maven Build
 ```
-./mvw package
+./mvw clean verify
 ```
 
 ### Docker
