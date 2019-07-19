@@ -16,13 +16,13 @@ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up
 curl "http://localhost:8080/fibonacci?count=10"
 ```
 
-###### Response:
+###### Response
 ```
     {
       "series": [0,1,1,2,3,5,8,13,21,34]
     }
 ```
-###### Error Response:
+###### Error Response
 ```
     {
       "status": "BAD_REQUEST",
@@ -34,17 +34,20 @@ curl "http://localhost:8080/fibonacci?count=10"
 ``` 
 curl "http://localhost:8080/actuator/health"
 ```
-###### Response:
+###### Response
 ```
 { 
   "status":"UP"
 }
 ```
 
-#### TODO:
+#### TODO
 1. Log File Management: Rolling Logs
 2. Enable SSL Security Filter
 3. Add Jenkins, Sonar & New Relic support
 4. Swagger API Documentation
 5. HATEOAS response
 6. Integrate with Redis or some caching system
+
+#### Target State Architecture
+![Alt text](system-design.png?raw=true "System Design")
